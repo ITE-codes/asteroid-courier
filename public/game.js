@@ -3,7 +3,7 @@ const ctx = canvas.getContext('2d');
 const $ = selector => document.querySelector(selector);
 const keys = new Set();
 let best = Number(localStorage.getItem('courier-best')) || 0;
-let score, lives, player, objects, elapsed, spawnTimer, running = false, paused = false, last = 0, invincible = 0;
+let score = 0, lives = 3, player = null, objects = [], elapsed = 0, spawnTimer = 0, running = false, paused = false, last = 0, invincible = 0;
 $('#best').textContent = best;
 const stars = Array.from({length: 52}, () => ({x: Math.random()*480, y: Math.random()*600, r: .5+Math.random()*1.5}));
 function reset() {
@@ -51,7 +51,7 @@ function draw() {
     else { ctx.fillStyle='#e77481';ctx.beginPath();ctx.arc(0,0,obj.w/2,0,Math.PI*2);ctx.fill();ctx.fillStyle='#ac425d';ctx.beginPath();ctx.arc(-5,-4,4,0,Math.PI*2);ctx.fill(); }
     ctx.restore();
   }
-  if (invincible === 0 || Math.floor(invincible*10)%2===0) {
+  if (player && (invincible === 0 || Math.floor(invincible*10)%2===0)) {
     ctx.save();ctx.translate(player.x+16,player.y+16);ctx.fillStyle='#80e2e6';ctx.beginPath();ctx.moveTo(0,-21);ctx.lineTo(17,17);ctx.lineTo(0,10);ctx.lineTo(-17,17);ctx.closePath();ctx.fill();ctx.fillStyle='#f9c75b';ctx.fillRect(-5,17,10,8);ctx.restore();
   }
   if (paused) { ctx.fillStyle='#07101fdc';ctx.fillRect(0,0,480,600);ctx.fillStyle='white';ctx.textAlign='center';ctx.font='bold 32px system-ui';ctx.fillText('Paused',240,300); }
